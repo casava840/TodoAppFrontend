@@ -34,13 +34,20 @@ function App() {
     }
     setTodos(todos.concat(todo));
     nextId.current += 1;
-  },[todos]); //todos의 변화가 있을때만 리렌더링ㅇ
+  },[todos]); //todos의 변화가 있을때만 리렌더링
+
+  const onRemove = useCallback(
+    id => {
+      setTodos(todos.filter(todo => todo.id !== id));
+    },
+    [todos],
+  );
 
   return (
     
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos}/>
+      <TodoList todos={todos} onRemove={onRemove} />
     </TodoTemplate>
   );
 }
