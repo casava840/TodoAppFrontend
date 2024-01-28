@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
@@ -21,12 +21,25 @@ function App() {
       text: '일정 관리 앱 만들기',
       checked: false,
     }
+
   ]);
+
+  const nextId = useRef(4);
+
+  const onInsert = useCallback(text => {
+    const todo = {
+      id: nextId.current,
+      text,
+      checked: false,
+    }
+    setTodos(todos.concat(todo));
+    nextId.current += 1;
+  },[todos]); //todos의 변화가 있을때만 리렌더링ㅇ
 
   return (
     
     <TodoTemplate>
-      <TodoInsert />
+      <TodoInsert onInsert={onInsert} />
       <TodoList todos={todos}/>
     </TodoTemplate>
   );
